@@ -1,5 +1,10 @@
 package document.element;
 
+/**
+ * Enumerates the visitors(verbs) used in this application.
+ *
+ * @param <R> Generic type.
+ */
 public interface TextElementVisitor<R> {
   
   R visitBasicText(BasicText current);

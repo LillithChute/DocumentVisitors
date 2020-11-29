@@ -9,7 +9,7 @@ import java.util.List;
 public class Paragraph implements TextElement {
 
   /** The content of the paragraph. */
-  private List<BasicText> content;
+  private final List<BasicText> content;
 
   /** Default constructor. */
   public Paragraph() {
@@ -18,7 +18,7 @@ public class Paragraph implements TextElement {
 
   /**
    * Add a text element to the paragraph.
-   * 
+   *
    * @param part the element to add.
    */
   public void add(BasicText part) {
@@ -27,7 +27,7 @@ public class Paragraph implements TextElement {
 
   /**
    * We return the content of a paragraph in order to make visitors possible.
-   * 
+   *
    * @return the contents of the paragraph.
    */
   public List<BasicText> getContent() {
@@ -36,10 +36,15 @@ public class Paragraph implements TextElement {
 
   @Override
   public String getText() {
-    StringBuilder result = new StringBuilder("");
+    StringBuilder result = new StringBuilder();
     for (BasicText element : content) {
-      result.append(element.getText() + " ");
+      result.append(element.getText()).append(" ");
     }
     return result.toString().trim();
+  }
+
+  @Override
+  public <R> R accept(TextElementVisitor<R> visitor) {
+    return visitor.visitParagraph(this);
   }
 }

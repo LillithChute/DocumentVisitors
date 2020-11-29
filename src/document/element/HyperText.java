@@ -6,12 +6,12 @@ package document.element;
 public class HyperText extends BasicText {
 
   /** The associated URL. */
-  private String url;
+  private final String url;
 
   /**
    * Constructor for the HyperText.
-   * 
-   * @param text the text
+   *
+   * @param text the text.
    * @param url  the url
    */
   public HyperText(String text, String url) {
@@ -21,10 +21,15 @@ public class HyperText extends BasicText {
 
   /**
    * Returns the url for this hypertext.
-   * 
+   *
    * @return the url
    */
   public String getUrl() {
     return url;
+  }
+
+  @Override
+  public <R> R accept(TextElementVisitor<R> visitor) {
+    return visitor.visitHyperText(this);
   }
 }

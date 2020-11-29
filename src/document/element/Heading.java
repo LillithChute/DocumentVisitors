@@ -1,12 +1,16 @@
 package document.element;
 
+/**
+ * Representation of a heading.
+ */
 public class Heading extends BasicText {
 
   /** The level of this heading. */
-  private int level;
+  private final int level;
 
   /**
-   * A heading in a document. 
+   * A heading in a document.
+   *
    * @param text the text
    * @param level the level of the heading
    */
@@ -17,9 +21,15 @@ public class Heading extends BasicText {
 
   /**
    * Accessor for the level of the heading.
+   *
    * @return the level
    */
   public int getLevel() {
     return level;
   }
- }
+
+  @Override
+  public <R> R accept(TextElementVisitor<R> visitor) {
+    return visitor.visitHeading(this);
+  }
+}

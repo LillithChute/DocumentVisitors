@@ -6,11 +6,11 @@ package document.element;
 public class BasicText implements TextElement {
 
   /** The text. */
-  private String text;
+  private final String text;
 
   /**
    * Constructor for the document element.
-   * 
+   *
    * @param text the content of the document element.
    */
   public BasicText(String text) {
@@ -20,5 +20,10 @@ public class BasicText implements TextElement {
   @Override
   public String getText() {
     return text;
+  }
+
+  @Override
+  public <R> R accept(TextElementVisitor<R> visitor) {
+    return visitor.visitBasicText(this);
   }
 }

@@ -10,16 +10,17 @@ import document.element.TextElement;
 import document.element.TextElementVisitor;
 
 /**
- * Visitor for building an HTML string for a document.
+ * Visitor for building a markdown string for a document.
  */
-public class HtmlStringVisitor implements TextElementVisitor<Void> {
-  private final StringBuilder htmlAccumulator;
+public class MarkdownStringVisitor implements TextElementVisitor<Void> {
+
+  private final StringBuilder markDownAccumulator;
 
   /**
    * Default constructor.
    */
-  public HtmlStringVisitor() {
-    this.htmlAccumulator = new StringBuilder();
+  public MarkdownStringVisitor() {
+    this.markDownAccumulator = new StringBuilder();
   }
 
   /**
@@ -27,25 +28,23 @@ public class HtmlStringVisitor implements TextElementVisitor<Void> {
    *
    * @return The accumulated text.
    */
-  public String getHtmlAccumulator() {
-    if (htmlAccumulator.length() <= 0) {
+  public String getMarkDownAccumulator() {
+    if (markDownAccumulator.length() <= 0) {
       throw new IllegalStateException("Visitor has not been used yet.");
     }
 
-    return htmlAccumulator.toString();
+    return markDownAccumulator.toString();
   }
 
   @Override
   public Void visitBasicText(BasicText current) {
-    htmlAccumulator.append(current.getText()).append("\n");
-
+    markDownAccumulator.append(current.getText()).append("\n");
     return null;
   }
 
   @Override
   public Void visitBoldText(BoldText current) {
-    htmlAccumulator.append("<b>").append(current.getText()).append("</b>").append("\n");
-
+    markDownAccumulator.append("**").append(current.getText()).append("**").append("\n");
     return null;
   }
 
@@ -54,13 +53,13 @@ public class HtmlStringVisitor implements TextElementVisitor<Void> {
 
     switch (current.getLevel()) {
       case 1:
-        htmlAccumulator.append("<h1>").append(current.getText()).append("</h1>").append("\n");
+        markDownAccumulator.append("# ").append(current.getText()).append("\n");
         break;
       case 2:
-        htmlAccumulator.append("<h2>").append(current.getText()).append("</h2>").append("\n");
+        markDownAccumulator.append("## ").append(current.getText()).append("\n");
         break;
       default:
-        htmlAccumulator.append("<h3>").append(current.getText()).append("</h3>").append("\n");
+        markDownAccumulator.append("### ").append(current.getText()).append("\n");
         break;
     }
 
@@ -69,35 +68,33 @@ public class HtmlStringVisitor implements TextElementVisitor<Void> {
 
   @Override
   public Void visitHyperText(HyperText current) {
-    htmlAccumulator.append("<a href=\"").append(current.getUrl()).append("\">")
-            .append(current.getText()).append("</a>\n");
-
+    markDownAccumulator.append("[").append(current.getText()).append("]")
+            .append("(").append(current.getUrl()).append(")").append("\n");
     return null;
   }
 
   @Override
   public Void visitItalicText(ItalicText current) {
-    htmlAccumulator.append("<i>").append(current.getText()).append("</i>").append("\n");
-
+    markDownAccumulator.append("*").append(current.getText()).append("*").append("\n");
     return null;
   }
 
   @Override
   public Void visitParagraph(Paragraph current) {
-    htmlAccumulator.append("<p>");
+
+    markDownAccumulator.append("\n");
 
     for (TextElement element :
             current.getContent()) {
       element.accept(this);
     }
 
-    htmlAccumulator.append("</p>").append("\n");
-
+    markDownAccumulator.append("\n");
     return null;
   }
 
   @Override
   public String toString() {
-    return htmlAccumulator.toString().trim();
+    return markDownAccumulator.toString().trim();
   }
 }
